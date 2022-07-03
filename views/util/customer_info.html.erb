@@ -1,0 +1,59 @@
+<%
+  customer_id = params[:customer_id].presence
+  customer_name = params[:customer_name].presence
+
+  if customer_id.present?
+    @customer = Customer.find(customer_id)
+  elsif customer_name.present?
+    @customer = Customer.find_by!(name: customer_name)
+  end
+%>
+
+<form method="GET">
+  <p>どれか1こ入れてね。</p>
+  <div class="mb-3">
+    <label for="input_customer_id" class="form-label">ID</label>
+    <input
+      id="input_customer_id"
+      type="text"
+      class="form-control"
+      name="customer_id"
+      value="<%= customer_id %>" />
+  </div>
+  <div class="mb-3">
+    <label for="input_customer_name" class="form-label">NAME</label>
+    <input
+      id="input_customer_name"
+      type="text"
+      class="form-control"
+      name="customer_name"
+      value="<%= customer_name %>" />
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<% if @customer %>
+  <%
+    data = [
+      ['ID', @customer.id],
+      ['NAME', @customer.name],
+      ['契約開始日', @customer.contract.started_at],
+    ]
+  %>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">key</th>
+        <th scope="col">value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% data.each do |key, value| %>
+      <tr>
+        <th scope="row"><%= key %></th>
+        <td><%= value %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
