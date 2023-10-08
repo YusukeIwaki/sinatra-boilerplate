@@ -8,6 +8,10 @@ require_relative './config/zeitwerk'
 require 'sinatra/base'
 
 class Application < Sinatra::Base
+  use ApplicationLogger
+  helpers ApplicationLogger::Helper
+  set :show_exceptions, false
+
   PAGES = [
     ['顧客情報取得', 'util/customer_info.html'],
   ]
